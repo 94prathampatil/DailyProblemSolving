@@ -20,8 +20,8 @@ public:
             return 0;
         }
         if(root -> left == NULL && root -> right == NULL){
-            sum = (isLeft == 1) ? sum += root -> val : sum = sum;
-            return sum;
+            // (isLeft == 1) ? sum += root -> val : sum = sum;
+            return (isLeft == 1) ? sum += root -> val : sum = sum;
         }
 
 
