@@ -15,43 +15,29 @@ const auto __ = []() {
 
 class Solution {
 public:
+    void solve(TreeNode* root, int level, map<int, int>& mp){
+        if(root == NULL){
+            return;
+        }   
+
+        if(mp.find(level) == mp.end())
+            mp[level] = root -> val;
+
+        solve(root -> right, level + 1, mp);
+        solve(root -> left, level + 1, mp);
+    }
     vector<int> rightSideView(TreeNode* root) {
-        ios_base::sync_with_stdio(0);
-        cin.tie(0);
-        cout.tie(0);
-
-        vector<vector<int>> levels;
-
-        if(root == NULL)    
-            return {};
-
-        queue<TreeNode*> q;
-        q.push(root);
-
-        while(!q.empty()){
-            int size = q.size();
-            vector<int> level;
-            for(int i = 0;i < size;i++){
-                TreeNode* node = q.front();
-                q.pop();
-
-                level.pb(node -> val);
-
-                if(node -> left)
-                    q.push(node -> left);
-
-                if(node -> right)
-                    q.push(node -> right);
-            }
-
-            levels.pb(level);
-        }
-
+        map<int, int> mp;
+        int level = 0;
         vector<int> ans;
-        for(auto i:levels){
-            ans.pb(i.back());
-        }
+        
+        solve(root, level, mp);
 
+        for(auto i:mp){
+            ans.pb(i.second);
+        }
+        
         return ans;
+        // return {};
     }
 };
