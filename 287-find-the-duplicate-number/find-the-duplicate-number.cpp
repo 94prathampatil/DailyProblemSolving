@@ -43,7 +43,7 @@ public:
             mid = s + (e - s) / 2;
         }
 
-        return s;
+        return e;
 
     }
 };
