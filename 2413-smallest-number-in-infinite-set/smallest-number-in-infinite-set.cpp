@@ -13,26 +13,28 @@ const auto __ = []() {
 
 class SmallestInfiniteSet {
 public:
-    int curr;
+    int val;
+    priority_queue<int, vector<int>, greater<int>> pq;
     set<int> st;
     SmallestInfiniteSet() {
-        curr = 1;
+        for(int i = 1;i <= 1000;i++){
+            pq.push(i);
+            st.insert(i);
+        }
     }
     
     int popSmallest() {
-        if(st.size()){
-            int val = *st.begin();
-            st.erase(val);
-            return val;
-        }
-        else{
-            curr++;
-            return curr - 1;
-        }
+        val = pq.top();
+        pq.pop();
+        st.erase(val);
+        return val;
     }
     
     void addBack(int num) {
-        if(curr > num)  st.insert(num);
+        if(st.count(num) == 0){
+            st.insert(num);
+            pq.push(num);
+        }
     }
 };
 
