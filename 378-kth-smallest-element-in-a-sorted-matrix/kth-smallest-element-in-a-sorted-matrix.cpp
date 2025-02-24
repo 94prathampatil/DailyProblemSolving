@@ -13,57 +13,39 @@ const auto __ = []() {
 
 #define pb(x) push_back(x);
 
-class node{
-    public:
-        int data, row, col;
-
-    node(int data, int row, int col){
-        this -> data = data;
-        this -> row = row;
-        this -> col = col;
-    }
-};
-
-class compare{
-    public:
-        bool operator()(node* a, node* b){
-            return a -> data > b -> data;
-        }
-};
- 
 class Solution {
 public:
-    int kthSmallest(vector<vector<int>>& matrix, int k) {
+    int kthSmallest(vector<vector<int>>& m, int k) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
         cout.tie(0);
 
-        priority_queue<node*, vector<node*>, compare> pq;
+        int n = m.size();
+        int s = m[0][0];
+        int e = m[n - 1][n - 1];
+        int mid = s + (e - s) / 2;
 
-        for(int i = 0;i < matrix.size();i++){
-            pq.push(new node(matrix[i][0], i, 0));
-        }
-
-        vector<int> ans;
-        while(!pq.empty()){
-            node* temp = pq.top();
-            pq.pop();
-
-            int data = temp -> data;
-            int row = temp -> row;
-            int col = temp -> col;
-
-            ans.pb(data);
-
-            if(col + 1 < matrix[row].size()){
-                pq.push(new node(matrix[row][col + 1], row, col + 1));
+        while(s < e){
+            int j = n - 1;
+            int cnt = 0;
+            for(int i = 0;i < n;i++){
+                int j = n - 1;
+                while(j >= 0 && m[i][j] > mid){
+                    j--;
+                }
+                cnt += j + 1;
             }
-        }
 
-        for(auto i:ans){
-            cout << i << " ";
-        }
+            if(cnt < k){
+                s = mid + 1;
+            }
+            else{
+                e = mid;
+            }
 
-        return ans[k-1];
+            mid = s + (e - s) / 2;
+        }   
+
+        return s;
     }
-};     
+};
