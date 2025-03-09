@@ -22,13 +22,15 @@ public:
         cout.tie(0);
 
         vector<int> ans;
+        unordered_map<int, int> mp;
 
         for(int i = 0;i < nums.size();i++){
-            int val = abs(nums[i]);
-            if(nums[val - 1] < 0)
-                ans.pb(val);
-            
-            nums[val - 1] *= -1;
+            if(mp.find(nums[i]) != mp.end()){
+                ans.pb(nums[i]);
+            }
+            else{
+                mp[nums[i]] = i;
+            }
         }
 
         return ans;
