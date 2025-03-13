@@ -24,20 +24,22 @@ public:
         cin.tie(0);
         cout.tie(0);
  
-        set<int> st;
-        for (auto &i : nums)
-        {
-            st.insert(i);
-        }
+        sort(nums.begin(), nums.end());
+        int naturalNum = 1;
 
-        for (int i = 1; i <= nums.size(); i++)
-        {
-            if (st.count(i) == 0)
-            {
-                return i;
+        for(int i = 0;i < nums.size();i++){
+            if(nums[i] < 0){
+                continue;
+            }
+            if(nums[i] == naturalNum){
+                naturalNum++;
+            }
+            else if(naturalNum < nums[i]){
+                break;
             }
         }
 
-        return nums.size() + 1;
+        return naturalNum;
+
     }
 };
