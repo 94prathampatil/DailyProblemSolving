@@ -26,7 +26,7 @@ public:
 
         ll maxi = *max_element(all());
         ll s = *min_element(all());
-        ll e = 1LL * maxi * cars * cars;
+        ll e = 1LL * *max_element(all()) * cars * cars;
         ll mid = s + (e - s) / 2;
         ll ans = s;
 
