@@ -5,10 +5,13 @@ public:
         cin.tie(0);
         cout.tie(0);
 
-        sort(nums.begin(), nums.end());
+        map<int, int> mp;
+        for(auto &i:nums){
+            mp[i]++;
+        }
 
-        for(int i = 0;i < nums.size();i += 2){
-            if(nums[i] != nums[i + 1]){
+        for(auto &i:mp){
+            if(i.second % 2 != 0){
                 return false;
             }
         }
