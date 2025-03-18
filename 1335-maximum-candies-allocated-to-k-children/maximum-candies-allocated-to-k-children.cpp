@@ -15,11 +15,13 @@ const auto __ = []() {
 #define ll long long
 #define llv long long vector
 #define all() v.begin(), v.end()
+#define v candies
 #define n v.size()
+
 
 class Solution {
 public:
-    int maximumCandies(vector<int>& v, long long k) {
+    int maximumCandies(vector<int>& candies, long long k) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
         cout.tie(0);
@@ -29,28 +31,28 @@ public:
 
         ll s = 1, e = *max_element(all());
         ll mid = s + (e - s) / 2;
-        int ans = s;
+        int ans = e;
 
         auto isOk = [&](int mid){
-            ll count = 0;
+            ll cnt = 0;
             for(auto &i:v){
-                count += (i / mid);
+                cnt += (i / mid);
             }
 
-            return count >= k;
+            return cnt >= k;
         };
 
-        while(s <= e){
+        while(s <= e) {
             if(isOk(mid)){
-                s = mid + 1;
                 ans = mid;
+                s = mid + 1;
             }
             else{
                 e = mid - 1;
             }
 
             mid = s + (e - s) / 2;
-        } 
+        }
 
         return ans;
     }
