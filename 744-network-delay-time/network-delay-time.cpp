@@ -15,9 +15,9 @@ const auto __ = []() {
 class Solution {
 public:
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
-        ios_base::sync_with_stdio(0);
-        cin.tie(0);
-        cout.tie(0);
+        // ios_base::sync_with_stdio(0);
+        // cin.tie(0);
+        // cout.tie(0);
 
         vector<pair<int, int>> adj[n + 1];
         for(auto it : times){
