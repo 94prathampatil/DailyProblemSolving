@@ -11,8 +11,6 @@ const auto __ = []() {
 }();
 #endif
 
-#define pb(x) push_back(x)
-
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
@@ -20,8 +18,7 @@ public:
         cin.tie(0);
         cout.tie(0);
 
-        int n = nums.size();
-        int s = 1, e = n, mid = s + (e - s) / 2;
+        int s = 0, e = nums.size(), mid = s + (e - s) / 2;
         int ans = 0;
 
         auto isOk = [&](int mid){
@@ -35,15 +32,15 @@ public:
 
         while(s < e){
             if(isOk(mid)){
+                ans = mid;
                 e = mid;
-            }
+            }   
             else{
                 s = mid + 1;
             }
             mid = s + (e - s) / 2;
         }
-
-        return e;
-
+    
+        return ans;
     }
 };
