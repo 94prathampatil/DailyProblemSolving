@@ -13,23 +13,18 @@ const auto __ = []() {
 
 class Solution {
 public:
-    int solve(vector<int> &dp, int n, int i){
-        if(i == n)  
-            return 1;
-        if(i > n)
-            return 0;
-
-        if(dp[i] != -1)
-            return dp[i];
-
-        return dp[i] = solve(dp, n, i + 1) + solve(dp, n, i + 2);
-    }
     int climbStairs(int n) {
-        ios_base::sync_with_stdio(0);
-        cin.tie(0);
-        cout.tie(0);
+        if (n <= 1) return 1;
 
-        vector<int> dp(n + 1, -1);
-        return solve(dp, n, 0);
+        int prev2 = 1;  
+        int prev1 = 1;  
+
+        for (int i = 2; i <= n; i++) {
+            int curr = prev1 + prev2;
+            prev2 = prev1;
+            prev1 = curr;
+        }
+
+        return prev1;
     }
 };
