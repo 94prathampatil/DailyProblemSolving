@@ -27,12 +27,29 @@ public:
 
         return ans;
     }
+
+    int solveTab(int n){
+        vector<int> dp(n + 1, INT_MAX);
+
+        dp[0] = 0;
+
+        int ans = n;
+        for(int i = 1;i <= n;i++){
+            for(int j = 1;j * j <= n;j++){
+                int temp = j * j;
+                if(i - temp >= 0)
+                    dp[i] = min(dp[i], dp[i - temp] + 1);
+            }            
+        }
+
+        return dp[n];
+    }
     int numSquares(int n) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
         cout.tie(0);
 
         vector<int> dp(n + 1, -1);
-        return solve(n, dp);
+        return solveTab(n);
     }
 };
