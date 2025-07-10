@@ -36,13 +36,33 @@ public:
         return dp[index] = min(singleDayPass, min(sevenDayPass, thirtyDaysPass));
     }
 
+    int solveTab(int n, vector<int>& days, vector<int>& cost){
+        vector<int> dp(n + 1, INT_MAX);
+        dp[n] = 0;
+
+        for(int i = n - 1; i >= 0;i--){
+            int singleDayPass = cost[0] + dp[i + 1];
+
+            int j;
+            for(j = i; j < n && days[j] < days[i] + 7;j++);
+            int sevenDayPass = cost[1] + dp[j];
+
+            for(j = i; j < n && days[j] < days[i] + 30;j++);
+            int thirtyDaysPass = cost[2] + dp[j];
+
+            dp[i] = min(singleDayPass, min(sevenDayPass, thirtyDaysPass));
+        }
+
+        return dp[0];
+    }
+
     int mincostTickets(vector<int>& days, vector<int>& costs) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
         cout.tie(0);
 
         int n = days.size();
-        vector<int> dp(n + 1, -1);
-        return solve(n, days, costs, 0, dp);
+        // vector<int> dp(n + 1, -1);
+        return solveTab(n, days, costs);
     }
 };
