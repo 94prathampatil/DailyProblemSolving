@@ -30,15 +30,34 @@ public:
         }
 
         return dp[idx] = false;
-    }   
+    } 
+
+    bool solveTab(vector<int> &nums){
+        int n = nums.size();
+        vector<bool> dp(n, false);
+        dp[0] = true;
+
+        for(int i = 0;i < n;i++){
+            if(dp[i]){
+                for(int j = 1;j <= nums[i];j++){
+                    if(i + j < n){
+                        dp[i + j] = true;
+                    }
+                }
+            }
+        }
+
+        return dp[n - 1];
+
+    }  
 
     bool canJump(vector<int>& nums) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
         cout.tie(0);
 
-        int n = nums.size();
-        vector<int> dp(n + 1, -1);
-        return solve(nums, 0, dp);
+        // int n = nums.size();
+        // vector<int> dp(n + 1, -1);
+        return solveTab(nums);
     }
 };
