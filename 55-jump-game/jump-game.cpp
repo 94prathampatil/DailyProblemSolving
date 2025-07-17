@@ -48,8 +48,19 @@ public:
         }
 
         return dp[n - 1];
-
     }  
+
+    bool solveSO(vector<int>& nums){
+        int far = 0;
+
+        for(int i = 0;i < nums.size();i++){
+            if(i > far )    return false;
+
+            far = max(far, i + nums[i]);
+        }
+
+        return true;
+    }
 
     bool canJump(vector<int>& nums) {
         ios_base::sync_with_stdio(0);
@@ -58,6 +69,6 @@ public:
 
         // int n = nums.size();
         // vector<int> dp(n + 1, -1);
-        return solveTab(nums);
+        return solveSO(nums);
     }
 };
