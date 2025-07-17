@@ -41,6 +41,34 @@ public:
             return dp[currLane][pos];
         }
     }
+
+    int solveTab(vector<int>& obs){
+        int n = obs.size() - 1;
+
+        vector<vector<int>> dp(4, vector<int> (obs.size(), INT_MAX));
+        dp[0][n] = 0;
+        dp[1][n] = 0;
+        dp[2][n] = 0;
+        dp[3][n] = 0;
+
+        for(int pos = n - 1;pos >= 0;pos--){
+            for(int currLane = 1;currLane <= 3;currLane++){
+                if(obs[pos + 1] != currLane){
+                    dp[currLane][pos] = dp[currLane][pos + 1];
+                }
+                else{
+                    int ans = INT_MAX;
+                    for(int i = 1;i <= 3;i++){
+                        if(currLane != i && obs[pos] != i)
+                            ans = min(ans, 1 + dp[i][pos + 1]);
+                    }
+                    dp[currLane][pos] = ans;
+                }
+            }
+        }
+
+        return min(dp[2][0], min(1 + dp[1][0], 1 + dp[3][0]));
+    }
     int minSideJumps(vector<int>& obs) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
@@ -48,6 +76,6 @@ public:
 
         int n = obs.size();
         vector<vector<int>> dp(4, vector<int>(n, -1));
-        return solve(obs, 2, 0, dp);
+        return solveTab(obs);
     }
 };
