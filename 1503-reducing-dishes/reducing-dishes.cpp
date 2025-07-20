@@ -46,7 +46,25 @@ public:
         }
 
         return dp[0][0];
+    }
 
+    int solveSO(vector<int> &satisfaction){
+        int n = satisfaction.size();
+        vector<int> curr(n + 1, 0);
+        vector<int> next(n + 1, 0);
+
+        for(int i = n - 1;i >= 0;i--){
+            for(int t = i;t >= 0;t--){
+                int incl = (satisfaction[i] * (t + 1)) + next[t + 1];
+                int excl = next[t];
+
+                curr[t] = max(incl, excl);
+            }
+
+            next = curr;
+        }
+
+        return next[0];
     }
     int maxSatisfaction(vector<int>& satisfaction) {
         ios_base::sync_with_stdio(0);
@@ -58,6 +76,6 @@ public:
 
         // int n = satisfaction.size();
         // vector<vector<int>> dp(n, vector<int> (n, -1));
-        return solveTab(satisfaction);
+        return solveSO(satisfaction);
     }
 };
