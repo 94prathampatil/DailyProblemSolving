@@ -29,6 +29,23 @@ public:
 
         dp[i][t] = max(inc, exc);
         return dp[i][t];
+    }
+
+    int solveTab(vector<int> &satisfaction){
+        int n = satisfaction.size();
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
+
+
+        for(int i = n - 1;i >= 0;i--){
+            for(int t = i;t >= 0;t--){
+                int incl = (satisfaction[i] * (t + 1)) + dp[i + 1][t + 1];
+                int excl = dp[i + 1][t];
+
+                dp[i][t] = max(incl, excl);
+            }
+        }
+
+        return dp[0][0];
 
     }
     int maxSatisfaction(vector<int>& satisfaction) {
@@ -39,8 +56,8 @@ public:
         sort(all(satisfaction));
         // return solve(satisfaction, 0, 0);
 
-        int n = satisfaction.size();
-        vector<vector<int>> dp(n, vector<int> (n, -1));
-        return solve(satisfaction, 0, 0, dp);
+        // int n = satisfaction.size();
+        // vector<vector<int>> dp(n, vector<int> (n, -1));
+        return solveTab(satisfaction);
     }
 };
