@@ -36,16 +36,16 @@ public:
     vector<vector<int>> dp(d + 1, vector<int>(t + 1, 0));
     dp[0][0] = 1;
 
-    for(int dice = 1; dice <= d; dice++){
-        for(int target = 1; target <= t; target++){
+    for(int dice = 1;dice <= d;dice++){
+        for(int target = 1;target <= t;target++){
             int ans = 0;
-            for(int i = 1; i <= f; i++){
-                if(target - i >= 0) {
+            for(int i = 1;i <= f;i++){
+                if(target - i >= 0)
                     ans = (((ans % m) + (dp[dice - 1][target - i] % m)) % m);
-                }
             }
-            dp[dice][target] = (ans % m);  
-        }
+
+            dp[dice][target] = (ans % m);
+        }   
     }
 
     return (dp[d][t] % m);  
