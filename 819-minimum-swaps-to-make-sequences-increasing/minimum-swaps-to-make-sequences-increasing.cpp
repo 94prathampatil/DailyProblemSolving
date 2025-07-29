@@ -39,6 +39,38 @@ public:
 
         return dp[index][swapped] = ans;
     }
+
+    int solveTab(vector<int> &nums1, vector<int> &nums2){
+        int n = nums1.size();
+        vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+
+        int ans = INT_MAX;
+        for(int index = n - 1;index >= 1;index--){
+            for(int swapped = 1;swapped >= 0;swapped--){
+                int ans = INT_MAX;
+
+                int prev1 = nums1[index - 1];
+                int prev2 = nums2[index - 1];
+
+                if(swapped) swap(prev1, prev2);
+
+                // no - swap
+                if(nums1[index] > prev1 && nums2[index] > prev2){
+                    if(index + 1 <= n){
+                        ans = dp[index + 1][0];
+                    }
+                }
+
+                if(nums1[index] > prev2 && nums2[index] > prev1){
+                    ans = min(ans, 1 + dp[index + 1][1]);
+                }
+
+                dp[index][swapped] = ans;
+            }
+        }
+
+        return dp[1][0];
+    }
     int minSwap(vector<int>& nums1, vector<int>& nums2) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
@@ -49,6 +81,6 @@ public:
 
         vector<vector<int>> dp(nums1.size(), vector<int> (2, -1));
 
-        return solve(1, nums1, nums2, 0, dp);
+        return solveTab(nums1, nums2);
     }
 };
