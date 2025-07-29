@@ -12,6 +12,7 @@ const auto __ = []() {
 #define m 1000000007
 #define all(x) x.begin(), x.end()
 
+
 class Solution {
 public:
     int solve(int idx, vector<int>& nums, int target, vector<vector<int>> &dp){
@@ -27,6 +28,28 @@ public:
         return dp[idx][target] = inc | exc;
     }
 
+    int solveTab(vector<int> &nums, int target){
+        int n = nums.size();
+        vector<vector<int>> dp(n + 1, vector<int>(target + 1, 0));
+
+        for(int i = 0;i <= n;i++){
+            dp[i][0] = 1;
+        }
+
+        for(int i = n - 1;i >= 0;i--){
+            for(int j = 0;j <= target;j++){
+                int inc = 0;
+                if(j - nums[i] >= 0){
+                    inc = dp[i + 1][j - nums[i]];
+                }
+                int exc = dp[i + 1][j];
+                dp[i][j] = inc | exc;
+            }
+        }
+
+        return dp[0][target];
+    }
+
     bool canPartition(vector<int>& nums) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
@@ -36,8 +59,8 @@ public:
         if(totalSum & 1)    return 0;
         int target = totalSum / 2;
 
-        int n = nums.size();
-        vector<vector<int>> dp(n + 1, vector<int>(target + 1, -1));
-        return solve(0, nums, target, dp);
+        // int n = nums.size();
+        // vector<vector<int>> dp(n + 1, vector<int>(target + 1, -1));
+        return solveTab(nums, target);        
     }
 };
