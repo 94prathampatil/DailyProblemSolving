@@ -15,26 +15,61 @@ const auto __ = []() {
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        // Brute Force, We can also solve using binary search 
-
         ios_base::sync_with_stdio(0);
         cin.tie(0);
         cout.tie(0);
 
-        for(auto &it:nums2){
-            nums1.pb(it);
+        int i = 0, j = 0;
+        int m = nums1.size(), n = nums2.size();
+        int cnt = -1;  // count how many elements we've merged so far
+
+        int total = m + n;
+        int medianIdx1 = total / 2;
+        int medianIdx2 = (total % 2 == 0) ? (total / 2 - 1) : medianIdx1;
+
+        int firstElement = 0, secondElement = 0;
+
+        while (i < m && j < n) {
+            int val;
+            if (nums1[i] < nums2[j]) {
+                val = nums1[i++];
+            } else {
+                val = nums2[j++];
+            }
+
+            cnt++;
+            if (cnt == medianIdx2) secondElement = val;
+            if (cnt == medianIdx1) {
+                firstElement = val;
+                break;
+            }
         }
 
-        sort(nums1.begin(), nums1.end());
-
-        int n = nums1.size();
-        if(n % 2 == 1){
-            return nums1[(n / 2)];
+        // If one array is exhausted
+        while (i < m && cnt < medianIdx1) {
+            int val = nums1[i++];
+            cnt++;
+            if (cnt == medianIdx2) secondElement = val;
+            if (cnt == medianIdx1) {
+                firstElement = val;
+                break;
+            }
         }
-        
-        double one = nums1[n / 2];
-        double two = nums1[(n / 2) - 1];
 
-        return (one + two) / 2.0;
+        while (j < n && cnt < medianIdx1) {
+            int val = nums2[j++];
+            cnt++;
+            if (cnt == medianIdx2) secondElement = val;
+            if (cnt == medianIdx1) {
+                firstElement = val;
+                break;
+            }
+        }
+
+        if (total % 2 == 1) {
+            return firstElement;
+        } else {
+            return (firstElement + secondElement) / 2.0;
+        }
     }
 };
