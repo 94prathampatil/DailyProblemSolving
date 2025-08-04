@@ -34,6 +34,26 @@ public:
 
         return ans;
     }
+
+    int solveTab(vector<int> &nums){
+        int n = nums.size();
+        vector<int> dp(n + 1, INT_MAX);
+
+        for(int i = n;i >= 0;i--){
+            int ans = INT_MAX;
+            for(int step = 1;step <= nums[i];step++){
+                if(step + i < n){
+                    int res = dp[step + i];
+                    if(res != INT_MAX){
+                        ans = min(ans, 1 + res);
+                    }
+                }
+                dp[i] = ans;
+            }
+        }
+
+        return dp[0];
+    }
     int jump(vector<int>& nums) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
