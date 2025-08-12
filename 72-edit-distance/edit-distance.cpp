@@ -43,41 +43,45 @@ public:
         int n = w1.length();
         int m = w2.length();
 
-        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+        // vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
 
+        vector<int> curr(m + 1, 0);
+        vector<int> next(m + 1, 0);
         for(int j = 0;j < m;j++){
-            dp[n][j] = m - j; 
-        }
-
-        for(int i = 0;i < n;i++){
-            dp[i][m] = n - i;
+            next[j] = m - j; 
         }
 
         for(int i = n - 1;i >= 0;i--){
             for(int j = m - 1;j >= 0;j--){
+
+                curr[m] = n - i;
                 int ans = 0;
                 if(w1[i] == w2[j]){
-                    ans = dp[i + 1][j + 1];
+                    ans = next[j + 1];
                 }
                 else{
-                    int insert = 1 + dp[i][j + 1];
-                    int remove = 1 + dp[i + 1][j];
-                    int replace = 1 + dp[i + 1][j + 1];
+                    int insert = 1 + curr[j + 1];
+                    int remove = 1 + next[j];
+                    int replace = 1 + next[j + 1];
 
                     ans = min(insert, min(remove, replace));
                 }
 
-                dp[i][j] = ans;
+                curr[j] = ans;
             }
+            next = curr;
         }
 
-        return dp[0][0];
+        return next[0];
     }
     int minDistance(string w1, string w2) {
         ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
         
-        // int n = w1.length();
-        // int m = w2.length();
+        int n = w1.length();
+        int m = w2.length();
+
+        if(n == 0)  return m;
+        if(m == 0)  return n;
 
         // vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
         return solveTab(w1, w2);
