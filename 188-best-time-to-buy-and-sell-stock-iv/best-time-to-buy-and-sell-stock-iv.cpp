@@ -15,29 +15,33 @@ class Solution {
 public:
     int solveTab(vector<int> &prices, int k){
         int n = prices.size();
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>> (2, vector<int>(k + 1, 0)));
+        // vector<vector<vector<int>>> dp(n + 1, vector<vector<int>> (2, vector<int>(k + 1, 0)));
+
+        vector<vector<int>> curr(2, vector<int> (k + 1, 0));
+        vector<vector<int>> next(2, vector<int> (k + 1, 0));
 
         for(int i = n - 1;i >= 0;i--){
             for(int isBuy = 0;isBuy <= 1;isBuy++){
                 for(int limit = 1;limit <= k;limit++){
                     int profit = 0;
                     if(isBuy){
-                        int buy = -prices[i] + dp[i + 1][0][limit];
-                        int notBuy = dp[i + 1][1][limit];
+                        int buy = -prices[i] + next[0][limit];
+                        int notBuy = next[1][limit];
                         profit = max(buy, notBuy);
                     }
                     else{
-                        int sell = prices[i] + dp[i + 1][1][limit - 1];
-                        int notSell = dp[i + 1][0][limit];
+                        int sell = prices[i] + next[1][limit - 1];
+                        int notSell = next[0][limit];
                         profit = max(sell, notSell);
                     }
-                    dp[i][isBuy][limit] = profit;
+                    curr[isBuy][limit] = profit;
                 }
 
+                next = curr;
             }
         }
 
-        return dp[0][1][k];
+        return next[1][k];
     }
     int maxProfit(int k, vector<int>& prices) {
         ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
