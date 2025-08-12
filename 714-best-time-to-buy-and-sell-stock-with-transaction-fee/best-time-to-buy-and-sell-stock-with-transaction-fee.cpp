@@ -22,6 +22,7 @@ public:
         return dp[i][isBuy] = profit;
     }
     int maxProfit(vector<int>& prices, int fee) {
+        ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
         int n = prices.size();
         vector<vector<int>> dp(n + 1, vector<int>(2, -1));
         return solve(0, 1, fee, prices, dp);
