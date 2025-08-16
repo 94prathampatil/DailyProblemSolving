@@ -20,7 +20,28 @@ public:
 
         return dp[row][col] = min({dLeft, dNext, dRight});
     }
+    int solveTab(vector<vector<int>> &mat, int col){
+        int n = mat.size();
 
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, INT_MAX));
+
+        for(int i = 0;i < n;i++){
+            dp[n - 1][i] = mat[n - 1][i];
+        }
+
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = 0; j < n; j++) {
+                int dLeft  = (j > 0)     ? dp[i + 1][j - 1] : INT_MAX;
+                int dNext  = dp[i + 1][j];
+                int dRight = (j < n - 1) ? dp[i + 1][j + 1] : INT_MAX;
+
+                dp[i][j] = mat[i][j] + min({dLeft, dNext, dRight});
+            }
+        }
+
+        return dp[0][col];
+
+    }
     int minFallingPathSum(vector<vector<int>>& mat) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
@@ -32,7 +53,7 @@ public:
         vector<vector<int>> dp(n + 1, vector<int>(n + 1, INT_MIN));
 
         for(int j = 0;j < n;j++){
-            ans = min(ans, solve(0, j, n, mat, dp));
+            ans = min(ans, solveTab(mat, j));
         }
 
         return ans;
