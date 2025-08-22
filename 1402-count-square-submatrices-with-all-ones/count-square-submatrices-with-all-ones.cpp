@@ -60,6 +60,35 @@ public:
         return total;
     }
 
+    int solveTabSO(vector<vector<int>> &matrix){
+        int n = matrix.size();
+        int m = matrix[0].size();
+        
+        vector<int> prev(m + 1, 0);
+        vector<int> curr(m + 1, 0);
+        
+        int total = 0; 
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(i == 0 || j == 0){
+                    curr[j] = matrix[i][j];  
+                }
+                else if(matrix[i][j] == 1){
+                    curr[j] = 1 + min({prev[j], prev[j - 1], curr[j - 1]});
+                }
+                else{
+                    curr[j] = 0;  
+                }
+
+                total += curr[j]; 
+            }
+            prev = curr;
+        }
+
+        return total;
+    }
+
     int countSquares(vector<vector<int>>& matrix) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
@@ -75,6 +104,6 @@ public:
         //     }
         // }
 
-        return solveTab(matrix);
+        return solveTabSO(matrix);
     }
 };
