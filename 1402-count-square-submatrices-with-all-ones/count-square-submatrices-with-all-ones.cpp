@@ -65,16 +65,16 @@ public:
         cin.tie(0);
         cout.tie(0);
 
-        int n = matrix.size();
-        int m = matrix[0].size();
-        vector<vector<int>> dp(n + 1, vector<int> (m + 1, -1));
-        int total = 0;
-        for(int i = 0;i < n;i++){
-            for(int j = 0;j < m;j++){
-                total += solve(i, j, n, m, matrix, dp);
-            }
-        }
+        // int n = matrix.size();
+        // int m = matrix[0].size();
+        // vector<vector<int>> dp(n + 1, vector<int> (m + 1, -1));
+        // int total = 0;
+        // for(int i = 0;i < n;i++){
+        //     for(int j = 0;j < m;j++){
+        //         total += solve(i, j, n, m, matrix, dp);
+        //     }
+        // }
 
-        return total;
+        return solveTab(matrix);
     }
 };
