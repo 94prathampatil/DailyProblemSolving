@@ -11,35 +11,35 @@
 class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
-        map<int, int> mp;
+        if(!head)   return head;
 
-        while(head != NULL){
-            mp[head -> val]++;
-            head = head -> next;
-        }
 
-        ListNode* ansHead = NULL;
-        ListNode* ansTail = NULL;
+        ListNode* dummy = new ListNode(0, head);
+        ListNode* prev = dummy;
+        ListNode* curr = head;
 
-        for(auto [node, freq]:mp){
-            if(freq == 1){
-                ListNode* Node = new ListNode(node);
-                if(ansHead == NULL && ansTail == NULL){
-                    ansHead = Node;
-                    ansTail = Node;
-                }
-                else{
-                    ansTail -> next = Node;
-                    ansTail = Node;
-                }
+
+        while(curr){
+            bool dup = false;
+
+            while(curr -> next && curr -> val == curr -> next -> val){
+                dup = true;
+                curr = curr -> next;
             }
+
+            if(dup){
+                prev -> next = curr -> next;
+            }
+            else{
+                prev  = prev -> next;
+            }
+
+            curr = curr -> next;
         }
 
-        for(ListNode* Head = ansHead; Head != NULL;Head = Head -> next){
-            cout << Head -> val << " -> ";
-        }
-        cout << "X";
+        ListNode* ansNode = dummy -> next;
+        delete dummy;
 
-        return ansHead;
+        return ansNode;
     }
 };
