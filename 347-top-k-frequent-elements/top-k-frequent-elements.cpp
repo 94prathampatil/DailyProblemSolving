@@ -1,16 +1,3 @@
-#define LC_HACK
-#ifdef LC_HACK
-const auto __ = []() {
-    struct ___ {
-        static void _() { std::ofstream("display_runtime.txt") << 0 << '\n'; }
-    };
-    std::atexit(&___::_);
-    return 0;
-}();
-#endif
-
-#define pb(x) push_back(x)
-
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
@@ -18,18 +5,27 @@ public:
         cin.tie(0);
         cout.tie(0);
 
-        map<int, int> mp;
-        for(auto i:nums)
+        unordered_map<int, int> mp;
+        for(auto i:nums){
             mp[i]++;
+        }
 
-        priority_queue<pair<int, int> > pq;
-        for(auto &[i, freq] : mp){
-            pq.push({freq, i});
+        priority_queue<pair<int, int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+
+        for(auto i:mp){
+            pq.push({i.second, i.first});
+            if((int)pq.size() > k){
+                pq.pop();
+            }
         }
 
         vector<int> ans;
-        for(int i = 0;i < k && !pq.empty();i++){
-            ans.pb(pq.top().second);pq.pop();
+
+        while(!pq.empty()){
+            auto top = pq.top();
+            pq.pop();
+
+            ans.push_back(top.second);
         }
 
         return ans;
