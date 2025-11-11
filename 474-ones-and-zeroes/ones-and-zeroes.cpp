@@ -15,6 +15,20 @@ public:
 
         return dp[i][m][n] = max(take, skip);
     }
+
+    int solveTab(int len, int m, int n,  vector<int> &one, vector<int> &zero){
+        vector<vector<int>> dp(m + 1, vector<int> (n + 1, 0));
+
+        for (int i = 0; i < len; i++) {
+            for (int j = m; j >= zero[i]; j--) {
+                for (int k = n; k >= one[i]; k--) {
+                    dp[j][k] = max(dp[j][k], 1 + dp[j - zero[i]][k - one[i]]);
+                }
+            }
+        }
+
+        return dp[m][n];
+    }
     int findMaxForm(vector<string>& strs, int m, int n) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
@@ -33,10 +47,8 @@ public:
             }
         }
 
-        // for(int i = 0;i < len;i++){
-        //     cout << "(" << one[i] <<", " << zero[i] << ") ";
-        // }
 
-        return solve(0, m, n, zero, one, dp);
+        // return solve(0, m, n, zero, one, dp);
+        return solveTab(len, m, n, one, zero);
     }
 };
