@@ -5,14 +5,12 @@ public:
         cin.tie(0);
         cout.tie(0);
 
-        int n = nums.size();
-        vector<int> ans(2 * n, 0);
+        const int n = nums.size();
 
         for(int i = 0;i < n;i++){
-            ans[i] = nums[i];
-            ans[i + n] = nums[i];
+            nums.push_back(nums[i]);
         }
 
-        return ans;
+        return nums;
     }
 };
