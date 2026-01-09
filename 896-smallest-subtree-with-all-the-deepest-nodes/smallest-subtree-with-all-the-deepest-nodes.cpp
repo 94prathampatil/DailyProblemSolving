@@ -11,52 +11,32 @@
  */
 class Solution {
 public:
+    int maxDepth = 0;
+    int dfs(TreeNode* root, int depth, TreeNode* &ans){
+        if(!root)   return depth;
+
+        int left = dfs(root -> left, depth + 1, ans);
+        int right = dfs(root -> right, depth + 1, ans);
+
+        int currDepth = max(left, right);
+        maxDepth = max(maxDepth, currDepth);
+
+        if(left == right && left == maxDepth){
+            ans = root;
+        }
+
+        return currDepth;
+    }
     TreeNode* subtreeWithAllDeepest(TreeNode* root) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
         cout.tie(0);
+        
+        if(!root)   return NULL;
 
-        if(!root) return NULL;
+        TreeNode* ans = NULL;
 
-        unordered_map<TreeNode*, TreeNode*> parent;
-
-        queue<TreeNode*> q;
-        q.push(root);
-        parent[root] = NULL;
-
-        vector<TreeNode*> lastLevel;
-
-        while(!q.empty()){
-            int size = q.size();
-            lastLevel.clear();
-
-            for(auto i = 0;i < size;i++){
-                TreeNode* node = q.front();
-                q.pop();
-                lastLevel.push_back(node);
-
-                if(node -> left){
-                    parent[node -> left] = node;
-                    q.push(node -> left);
-                }
-
-                if(node -> right){
-                    parent[node -> right] = node;
-                    q.push(node -> right);
-                }
-            }
-        }
-
-        unordered_set<TreeNode*> deep(lastLevel.begin(), lastLevel.end());
-
-        while(deep.size() > 1){
-            unordered_set<TreeNode*> next;
-            for(auto node : deep){
-                next.insert(parent[node]);
-            }
-            deep = next;
-        }
-
-        return *deep.begin();
+        dfs(root, 0, ans);
+        return ans;
     }
 };
