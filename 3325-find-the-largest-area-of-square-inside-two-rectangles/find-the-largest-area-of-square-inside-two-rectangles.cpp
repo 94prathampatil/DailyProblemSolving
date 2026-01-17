@@ -24,6 +24,6 @@ public:
             }
         }
 
-        return 1LL * maxi * maxi;
+        return maxi * maxi;
     }
 };
