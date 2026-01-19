@@ -22,14 +22,17 @@ public:
         }
 
         int ans = 0;
+        int s = 1, e = min(n, m), mid = s + (e - s) / 2;
 
         // Try all square sizes
-        for (int k = 1; k <= min(n, m); k++) {
-            for (int i = 0; i + k - 1 < n; i++) {
-                for (int j = 0; j + k - 1 < m; j++) {
+        
+        while(s <= e){
+            bool ok = false;
+            for (int i = 0; i + mid - 1 < n; i++) {
+                for (int j = 0; j + mid - 1 < m; j++) {
 
-                    int i2 = i + k - 1;
-                    int j2 = j + k - 1;
+                    int i2 = i + mid - 1;
+                    int j2 = j + mid - 1;
 
                     int sum = pref[i2][j2];
                     if (i > 0) sum -= pref[i - 1][j2];
@@ -37,11 +40,24 @@ public:
                     if (i > 0 && j > 0) sum += pref[i - 1][j - 1];
 
                     if (sum <= threshold) {
-                        ans = max(ans, k);
+                        ok = true;
+                        break;
                     }
                 }
             }
+
+            if(ok){
+                ans = mid;
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+
+            mid = s + (e - s) / 2;
         }
+            
+        
 
         return ans;
     }
