@@ -1,80 +1,81 @@
+typedef long long ll;
+#define all(x) x.begin(), x.end()
+
 class Solution {
 public:
-    using ll = long long;
-
     int minimumPairRemoval(vector<int>& nums) {
-        ios_base::sync_with_stdio(0);
-        cin.tie(0);
-        cout.tie(0);
-
-        
         int n = nums.size();
-        if (n <= 1)
-            return 0;
 
-        vector<ll> arr(nums.begin(), nums.end());
-        vector<bool> removed(n, false);
-        priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<>> pq;
+        vector<ll> temp(all(nums));
 
-        int sorted = 0;
-        for (int i = 1; i < n; ++i) {
-            pq.emplace(arr[i - 1] + arr[i], i - 1);
-            if (arr[i] >= arr[i - 1])
-                sorted++;
-        }
-        if (sorted == n - 1)
-            return 0;
+        set<pair<ll, int>> minPairSet;
 
-        int rem = n;
-        vector<int> prev(n), next(n);
-        for (int i = 0; i < n; ++i) {
-            prev[i] = i - 1;
-            next[i] = i + 1;
+        vector<int> nextIndex(n), prevIndex(n);
+
+        for(int i = 0; i < n; i++){
+            nextIndex[i] = i + 1;
+            prevIndex[i] = i - 1;
         }
 
-        while (rem > 1) {
-            auto [sum, left] = pq.top();
-            pq.pop();
-            int right = next[left];
-            if (right >= n || removed[left] || removed[right] ||
-                arr[left] + arr[right] != sum)
-                continue;
+        int badPairs = 0;
+        for(int i = 0; i < n - 1; i++){
+            if(temp[i] > temp[i + 1])
+                badPairs++;
 
-            int pre = prev[left];
-            int nxt = next[right];
+            minPairSet.insert({temp[i] + temp[i + 1], i});
+        }
 
-            if (arr[left] <= arr[right])
-                sorted--;
-            if (pre != -1 && arr[pre] <= arr[left])
-                sorted--;
-            if (nxt != n && arr[right] <= arr[nxt])
-                sorted--;
+        int oper = 0;
 
-            arr[left] += arr[right];
-            removed[right] = true;
-            rem--;
+        while(badPairs){
+            auto it = minPairSet.begin();
+            int first = it->second;
+            int second = nextIndex[first];
 
-            if (pre == -1) {
-                prev[left] = -1;
-            } else {
-                pq.emplace(arr[pre] + arr[left], pre);
-                if (arr[pre] <= arr[left])
-                    sorted++;
+            minPairSet.erase(it);
+
+            if(second >= n) continue;  // safety check
+
+            int first_left = prevIndex[first];
+            int second_right = nextIndex[second];
+
+            // Remove old bad pair (first, second)
+            if(temp[first] > temp[second])
+                badPairs--;
+
+            // Check (first_left, first)
+            if(first_left >= 0){
+                bool oldBad = temp[first_left] > temp[first];
+                bool newBad = temp[first_left] > temp[first] + temp[second];
+
+                if(oldBad && !newBad) badPairs--;
+                if(!oldBad && newBad) badPairs++;
+
+                minPairSet.erase({temp[first_left] + temp[first], first_left});
+                minPairSet.insert({temp[first_left] + temp[first] + temp[second], first_left});
             }
 
-            if (nxt == n) {
-                next[left] = n;
-            } else {
-                prev[nxt] = left;
-                next[left] = nxt;
-                pq.emplace(arr[left] + arr[nxt], left);
-                if (arr[left] <= arr[nxt])
-                    sorted++;
+            // Check (second, second_right)
+            if(second_right < n){
+                bool oldBad = temp[second] > temp[second_right];
+                bool newBad = temp[first] + temp[second] > temp[second_right];
+
+                if(oldBad && !newBad) badPairs--;
+                if(!oldBad && newBad) badPairs++;
+
+                minPairSet.erase({temp[second] + temp[second_right], second});
+                minPairSet.insert({temp[first] + temp[second] + temp[second_right], first});
+
+                prevIndex[second_right] = first;
             }
 
-            if (sorted == rem - 1)
-                return n - rem;
+            nextIndex[first] = second_right;
+
+            temp[first] += temp[second];
+
+            oper++;
         }
-        return n;
+
+        return oper;
     }
 };
