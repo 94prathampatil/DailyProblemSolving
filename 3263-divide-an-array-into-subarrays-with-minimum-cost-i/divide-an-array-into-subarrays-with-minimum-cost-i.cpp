@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minimumCost(vector<int>& nums) {
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+        cout.tie(0);
+
+        int n = nums.size();
+
+        int firstMin = INT_MAX;
+        int secondMin = INT_MAX;
+
+        for(int i = 1;i < n;i++){
+            if(nums[i] < firstMin){
+                secondMin = firstMin;
+                firstMin = nums[i];
+            }
+            else if(nums[i] < secondMin){
+                secondMin = nums[i];
+            }
+        }
+
+        return nums[0] + firstMin + secondMin;
+    }
+};
