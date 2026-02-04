@@ -5,23 +5,23 @@ public:
         cin.tie(0);
         cout.tie(0);
 
-        map<int, int> mp;
+        vector<int> diffArr(1001, 0);
 
-        for(auto &t : trips){
-            int p = t[0], s = t[1], e = t[2];
-            mp[s] += p;
-            mp[e] -= p;
+        for(auto &trip : trips){
+            int passenger = trip[0];
+            int s = trip[1];
+            int e = trip[2];
+
+            diffArr[s] += passenger;
+            diffArr[e] -= passenger; 
         }
 
-        int passengers = 0;
-        for(auto &i : mp){
-            passengers += i.second;
+        int cnt = 0;
+        for(int i = 0;i < 1001;i++){
+            cnt += diffArr[i];
 
-            if(passengers > capacity){
+            if(cnt > capacity)
                 return false;
-            }
-
-            // cout << i.first << " " << i.second << endl;
         }
 
         return true;
