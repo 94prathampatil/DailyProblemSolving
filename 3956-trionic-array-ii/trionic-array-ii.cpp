@@ -64,6 +64,11 @@ public:
     }
 
     ll maxSumTrionic(vector<int>& nums) {
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+        cout.tie(0);
+
+        
         n = nums.size();
 
         vector<vector<ll>> dp(n + 1, vector<ll> (4, LLONG_MIN));
