@@ -21,7 +21,7 @@ public:
 
         int ans = 0, n = nums.size();
         int i = 0, j = 0;
-        sort(nums.begin(), nums.end());
+        sort(begin(nums), end(nums));
 
         while(j < n){
             ll maxi = (k * (nums[i] * 1LL));
