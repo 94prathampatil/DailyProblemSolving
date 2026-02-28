@@ -20,11 +20,12 @@ public:
         cout.tie(0);
 
         long ans = 0;
-
+        int digit = 0;
         for(int i = 1;i <= n;i++){
-            int bit = log2(i) + 1;
+            if((i & (i - 1)) == 0)
+                digit++;
 
-            ans = ((ans << bit) % M + i) % M;
+            ans = ((ans << digit) % M + i) % M;
         }
 
         return ans;
