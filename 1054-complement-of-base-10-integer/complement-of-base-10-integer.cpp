@@ -5,19 +5,12 @@ public:
         cin.tie(0);
         cout.tie(0);
 
-        if(n == 0) return 1;
+        int mask = 1;
 
-        int count = 0;
-        int res = 0;
-
-        while(n){
-            int r = n % 2;
-            res += pow(2, count) * !r;
-            count++;
-
-            n /= 2;
+        while(mask < n){
+            mask = (mask << 1) | 1;
         }
 
-        return res;
+        return n ^ mask;
     }
 };
