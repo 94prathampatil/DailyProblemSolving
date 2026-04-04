@@ -18,36 +18,23 @@ public:
         cin.tie(0);
         cout.tie(0);
 
-        int len = encodedText.length();
-        int columns = len / rows;
+        string ogText = "";
 
-        string ans = "";
-        vector<vector<char>> ogText(rows, vector<char> (columns, ' '));
-
-        int ind = 0;
-        for(int i = 0;i < rows;i++){
-            for(int j = 0;j < columns;j++){
-                ogText[i][j] = encodedText[ind++];
-            }
-        }
+        int columns = encodedText.length() / rows;
 
         for(int col = 0;col < columns;col++){
-            int i = 0;
-            int j = col;
-
-            while(i < rows && j < columns){
-                ans += ogText[i][j];
-                i++, j++;
+            for(int j = col;j < encodedText.length();j += (columns + 1)){
+                ogText += encodedText[j];
             }
         }
 
-        int i = ans.length() - 1;
+        int i = ogText.length() - 1;
 
-        while(i >= 0 && ans[i] == ' '){
-            ans.pop_back();
+        while(i >= 0 && ogText[i] == ' '){
+            ogText.pop_back();
             i--;
         }
 
-        return ans;
+        return ogText;
     }
 };
